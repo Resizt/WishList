@@ -1,3 +1,4 @@
 ﻿  WishList.cpp
-C:\Users\badbo\source\repos\WishList\WishList.cpp(45,26): error C2450: switch expression of type 'std::basic_istream<char,std::char_traits<char>>' is illegal
-C:\Users\badbo\source\repos\WishList\WishList.cpp(45,15): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Users\Resizt\Documents\Git\Projects\C++\WishList\WishList.cpp(179,14): warning C4101: 'family': unreferenced local variable
+C:\Users\Resizt\Documents\Git\Projects\C++\WishList\WishList.cpp(197,15): warning C4101: 'list': unreferenced local variable
+  WishList.vcxproj -> C:\Users\Resizt\Documents\Git\Projects\C++\WishList\Debug\WishList.exe
