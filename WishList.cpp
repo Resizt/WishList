@@ -9,27 +9,28 @@ using namespace std;
 
 // Basic Terminal GUI and Menu
 void welcome();
-void menu	(string[], int&, int&);
-void menu2	(string[], int&, int&);
-void header	(string[], int&);
+void menu(string[], int&, int&);
+void menu2(string[], int&, int&);
+void header(string[], int&);
 void cleanup();
 
 // Family functions
-void addfamily		(string[], int&);
-void selectfamily	(string[], int&);
-void removemem		(string[], int&);
-void listfamily		(string[], int&);
-void selectedfamily	(string[], int&, int&);
-void editfamily		(string[], int&);
+void addfamily(string[], int&);
+void selectfamily(string[], int&);
+void removemem(string[], int&);
+void listfamily(string[], int&);
+void selectedfamily(string[], int&, int&);
+void editfamily(string[], int&);
 
 // Wish List Functions
-void listassigner	(string[], string familymemb[50][20][1], int&, int&);
+void listassigner(string[], string familymemb[50][20][1], int&, int&);
 void currentwishlist(string[], string familymemb[50][20][1], int&, int&);
 void purchaseditems(string[], string familymemb[50][20][1], int&, int&);
+void editwishlist(string[], string familymemb[50][20][1], int&, int&);
 
 // Info/Storage Manager
-void readin	(string[], int&);
-void save	(string[], int&);
+void readin(string[], int&);
+void save(string[], int&);
 void cleaner(string[], int&);
 
 /*------------------------------------------------------------------------*/
@@ -232,7 +233,7 @@ void listfamily(string familymem[], int& instore) {
 }
 
 void removemem(string familymem[], int& instore) {
-	int remove, family;
+	int remove;
 	string move;
 
 	cleanup();
@@ -292,10 +293,11 @@ void listassigner(string familymem[], string familymemb[50][20][1], int& instore
 
 void menu2(string familymem[], int& instore, int& chosenmem) {
 	string familymemb[50][20][1];
+	int choice = 0, items = 0;
+
 
 	listassigner(familymem, familymemb, instore, chosenmem);
 	header(familymem, chosenmem);
-	int choice = 0;
 
 	while (choice != 7 || choice != 8) {
 		cout << "1. Current Wish List" << endl;
@@ -311,15 +313,15 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 
 		switch (choice) {
 		case 1:
-			currentwishlist(familymem, familymemb, instore, chosenmem);
+			currentwishlist(familymem, familymemb, items, chosenmem);
 			save(familymem, instore);
 			break;
 		case 2:
-			//	selectfamily(familymem, instore);
+			purchaseditems(familymem, familymemb, items, chosenmem);
 			save(familymem, instore);
 			break;
 		case 3:
-			//	removemem(familymem, instore);
+			editwishlist(familymem, familymemb, items, chosenmem);
 			save(familymem, instore);
 			break;
 		case 4:
@@ -345,27 +347,115 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 	}
 }
 
-void currentwishlist(string familymem[], string familymemb[50][20][1], int& instore, int& chosenmem) {
+void currentwishlist(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
 	header(familymem, chosenmem);
-
-	cout << "This is the current Wish List for " << familymem[chosenmem] << endl;
-	for (int i = 1; i <= instore; i++) {
-		cout << familymemb[chosenmem][i][1];
+	if (items != 0) {
+		cout << "This is the current Wish List for " << familymem[chosenmem] << endl;
+		for (int i = 1; i <= items; i++) {
+			cout << i << ". " << familymemb[chosenmem][i][0] << endl;
+		}
+		cout << "-------------------------------" << endl;
 	}
-	cout << "-------------------------------" << endl;
+	else {
+		cout << "The list is empty" << endl;
+		cout << "-------------------------------" << endl;
+	}
 }
 
-void purchaseditems(string familymem[], string familymemb[50][20][1], int& instore, int& chosenmem) {
+void purchaseditems(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
 	header(familymem, chosenmem);
-
-	cout << "This is the list of items that have been purchased already" << endl;
-	cout << "-------------------------------" << endl;
-
-	for (int i = 0; i <= 20; i++) {
-		familymemb[chosenmem][i][0];
+	int bought = 0;
+	for (int i = 1; i <= items; i++) {
+		familymemb[chosenmem][i][1];
+		bought++;
 	}
 
+	if (bought > 0) {
+		cout << "This is the list of items that have been purchased already" << endl;
+		cout << "-------------------------------" << endl;
+		for (int i = 1; i <= items; i++) {
+			cout << i << ". " << familymemb[chosenmem][i][1] << endl;
+		}
+		cout << "-------------------------------" << endl;
+	}
+	else {
+		cout << "You haven't bought anything" << endl;
+		cout << "-------------------------------" << endl;
+	}
+}
 
+void editwishlist(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
+	header(familymem, chosenmem);
+	string item, rename;
+	int input, number, bought = 0;
+	char response; 
+
+	cout << "1. Add an item" << endl;
+	cout << "2. Edit an existing item" << endl;
+	cout << "3. Change the status of an item" << endl;
+
+	cin >> input;
+
+	while (input != 0) {
+
+		// Adding an item
+		if (input == 1) {
+			header(familymem, chosenmem);
+			if (items != 20) {
+				items++;
+				cout << "Put in the item you want to add" << endl;
+				cin >> item;
+				familymemb[chosenmem][items][0] = item;
+			}
+			else
+				cout << "Your list is full" << endl;
+			break;
+		}
+
+		// Editin an existing item
+		if (input == 2) {
+			header(familymem, chosenmem);
+			for (int i = 1; i <= items; i++) {
+				cout << i << ". " << familymemb[chosenmem][i][0] << endl;
+			}
+
+			cout << "Which item you want to edit" << endl;
+			cin >> number;
+				cout << "What do you want to rename it to?" << endl;
+			cin >> rename;
+				familymemb[chosenmem][number][0] = rename;
+			break;
+		}
+		else if (items == 0) {
+			cout << "There's nothing on the list" << endl;
+			break;
+		}
+
+		// Change the purchase status of an item
+		if (input == 3) {
+			header(familymem, chosenmem);
+			cout << "Wishlist items" << endl;
+			
+			for (int i = 1; i <= items; i++) {
+				cout << i << ". " << familymemb[chosenmem][i][0] << endl;
+				cout << "-------------------------------" << endl;
+			}
+			cout << "Which item you want to change the purchase status for?" << endl;
+			cin >> number;
+			cleanup();
+			cout << familymemb[chosenmem][number][0] << endl;
+			cout << "Does " << familymem[chosenmem] << " owns this item now? [Y/N]" << endl;
+			cin >> response;
+				if ((response == 'Y') || (response == 'y')) {
+					familymemb[chosenmem][number][1] = familymemb[chosenmem][number][0];
+					}
+				else if ((response == 'N') || (response == 'n'))
+					familymemb[chosenmem][number][0] = familymemb[chosenmem][number][1];
+		}
+		else if (items == 0)
+			cout << "There's nothing on the list" << endl;
+			break;
+	}
 }
 
 /*------------------------------------------------------------------------*/
