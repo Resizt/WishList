@@ -4,6 +4,7 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
+#include <stdio.h> 
 #include <io.h>
 
 using namespace std;
@@ -36,8 +37,6 @@ void wishSave(string[], string familymemb[50][20][1], int&, int&);
 void wishReadin(string[], string familymemb[50][20][1], int&, int&);
 void cleaner(string[], int&);
 
-/*------------------------------------------------------------------------*/
-
 int main() {
 	int input = 0, instore = 1;
 	string familymem[50];
@@ -50,6 +49,112 @@ int main() {
 
 	exit(0);
 }
+
+/*------------------------------------------------------------------------*/
+
+// Menu Functions
+
+/*------------------------------------------------------------------------*/
+
+void menu(string familymem[], int& choice, int& instore) {
+	while (choice != 6) {
+		cout << "1. Add A Member" << endl;
+		cout << "2. Select a Family Member" << endl;
+		cout << "3. List Family Members" << endl;
+		cout << "4. Edit Family Member" << endl;
+		cout << "5. Remove Family Member" << endl;
+		cout << "6. Quit Program" << endl;
+
+		cin >> choice;
+		switch (choice) {
+		case 1:
+			addfamily(familymem, instore);
+			save(familymem, instore);
+			break;
+		case 2:
+			selectfamily(familymem, instore);
+			save(familymem, instore);
+			break;
+		case 3:
+			listfamily(familymem, instore);
+			save(familymem, instore);
+			break;
+		case 4:
+			editfamily(familymem, instore);
+			save(familymem, instore);
+			break;
+		case 5:
+			removemem(familymem, instore);
+			break;
+		case 6:
+			exit(0);
+			break;
+		}
+	}
+}
+
+void menu2(string familymem[], int& instore, int& chosenmem) {
+	string familymemb[50][20][1];
+	int choice = 0, items = 0, amount = 0;
+
+	wishReadin(familymem, familymemb, chosenmem, instore);
+
+	listassigner(familymem, familymemb, instore, chosenmem);
+	header(familymem, chosenmem);
+
+	while (choice != 7 || choice != 8) {
+		cout << "1. Current Wish List" << endl;
+		cout << "2. Items Already Aquried" << endl;
+		cout << "3. Edit Wish List" << endl;
+		cout << "4. Type of items" << endl;
+		cout << "5. Find suggestions" << endl;
+		cout << "6. Change Family Member" << endl;
+		cout << "7. Go Back" << endl;
+		cout << "8. Exit Program" << endl;
+
+		cin >> choice;
+
+		switch (choice) {
+		case 1:
+			currentwishlist(familymem, familymemb, items, chosenmem);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 2:
+			purchaseditems(familymem, familymemb, items, chosenmem);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 3:
+			editwishlist(familymem, familymemb, items, chosenmem);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 4:
+			//	listfamily(familymem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 5:
+			//	exit(0);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 6:
+			selectfamily(familymem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore);
+			break;
+		case 7:
+			cleanup();
+			menu(familymem, choice, instore);
+			break;
+		case 8:
+			exit(0);
+			break;
+		}
+	}
+}
+
+/*------------------------------------------------------------------------*/
+
+// File Manager
+
+/*------------------------------------------------------------------------*/
 
 void readin(string familymem[], int& instore) {
 	string name;
@@ -69,15 +174,6 @@ void readin(string familymem[], int& instore) {
 	wishlist.close();
 }
 
-void cleaner(string familymem[], int& instore) {
-	int replace = instore;
-
-	for (int i = 1; i <= instore; i++) {
-		if (familymem[i] == "")
-			instore--;
-	}
-}
-
 void save(string familymem[], int& instore) {
 	ofstream namelist;
 
@@ -87,6 +183,15 @@ void save(string familymem[], int& instore) {
 		namelist << familymem[familyamount] << endl;
 
 	namelist.close();
+}
+
+void cleaner(string familymem[], int& instore) {
+	int replace = instore;
+
+	for (int i = 1; i <= instore; i++) {
+		if (familymem[i] == "")
+			instore--;
+	}
 }
 
 void wishSave(string familymem[], string familymemb[50][20][1], int& chosenmem, int& instore) {
@@ -145,47 +250,12 @@ void wishReadin(string familymem[], string familymemb[50][20][1], int& chosenmem
 	wishlist.close();
 }
 
-void welcome() {
-	cout << "Welcome to the Family Wish List" << endl;
-	cout << "-------------------------------" << endl;
-}
 
-void menu(string familymem[], int& choice, int& instore) {
-	while (choice != 6) {
-		cout << "1. Add A Member"			<< endl;
-		cout << "2. Select a Family Member" << endl;
-		cout << "3. List Family Members"	<< endl;
-		cout << "4. Edit Family Member"		<< endl;
-		cout << "5. Remove Family Member"	<< endl;
-		cout << "6. Quit Program"			<< endl;
+/*------------------------------------------------------------------------*/
 
-		cin >> choice;
-		switch (choice) {
-		case 1:
-			addfamily(familymem, instore);
-			save(familymem, instore);
-			break;
-		case 2:
-			selectfamily(familymem, instore);
-			save(familymem, instore);
-			break;
-		case 3:
-			listfamily(familymem, instore);
-			save(familymem, instore);
-			break;
-		case 4:
-			editfamily(familymem, instore);
-			save(familymem, instore);
-			break;
-		case 5:
-			removemem(familymem, instore);
-			break;
-		case 6:
-			exit(0);
-			break;
-		}
-	}
-}
+// Family Functions
+
+/*------------------------------------------------------------------------*/
 
 void addfamily(string familymem[], int& instore) {
 	string newfamily, newname;
@@ -253,7 +323,7 @@ void editfamily(string familymem[], int& instore){
 	cleanup();
 }
 
-void selectfamily(string familymem[], int& instore){
+void selectfamily(string familymem[], int& instore) {
 	string lookfor;
 	int choice;
 
@@ -270,10 +340,12 @@ void selectfamily(string familymem[], int& instore){
 		cout << "There's no one to select up" << endl;
 		cout << "-------------------------------" << endl;
 	}
-	if (choice != 0 && choice <= instore)
-		selectedfamily(familymem, instore, choice);
-	else
-		cleanup();
+	if (familymem[1] != "") {
+		if (choice != 0 && choice >= instore)
+			selectedfamily(familymem, instore, choice);
+		else
+			cleanup();
+	}
 }
 
 void listfamily(string familymem[], int& instore) {
@@ -297,8 +369,8 @@ void listfamily(string familymem[], int& instore) {
 }
 
 void removemem(string familymem[], int& instore) {
-	int remove;
-	string move;
+	int removeMem;
+	string move, file2;
 
 	cleanup();
 
@@ -311,9 +383,12 @@ void removemem(string familymem[], int& instore) {
 		}
 		cout << "-------------------------------" << endl;
 
-		cin >> remove;
+		cin >> removeMem;
+		file2 = familymem[removeMem];
+		file2 = file2 + ".txt";
+		remove(file2.c_str());
 
-		familymem[remove] = "";
+		familymem[removeMem] = "";
 
 		for (int family = 1; family <= instore; family++) {
 			if (familymem[family] == "") {
@@ -330,85 +405,17 @@ void removemem(string familymem[], int& instore) {
 	}
 }
 
-void cleanup() {
-	system("CLS");
-}
-
 /*------------------------------------------------------------------------*/
 
-void selectedfamily(string familymem[], int& instore, int& chosenmem) {
-	header(familymem, chosenmem);
-	menu2(familymem, instore, chosenmem);
-}
+// GUI/Terminal Functions
 
-void header(string familymem[], int& chosenmem) {
-	cleanup();
-	cout << "Family member: " << familymem[chosenmem] << endl;
-	cout << "-------------------------------" << endl;
-}
+/*------------------------------------------------------------------------*/
 
 void listassigner(string familymem[], string familymemb[50][20][1], int& instore, int& chosenmem) {
 	string name;
 	for (int i = 1; i <= instore; i++) {
 		name = familymem[i];
 		familymemb[i][0][0] = name;
-	}
-}
-
-void menu2(string familymem[], int& instore, int& chosenmem) {
-	string familymemb[50][20][1];
-	int choice = 0, items = 0, amount = 0;
-
-	wishReadin(familymem, familymemb, chosenmem, instore);
-
-	listassigner(familymem, familymemb, instore, chosenmem);
-	header(familymem, chosenmem);
-
-	while (choice != 7 || choice != 8) {
-		cout << "1. Current Wish List" << endl;
-		cout << "2. Items Already Aquried" << endl;
-		cout << "3. Edit Wish List" << endl;
-		cout << "4. Type of items" << endl;
-		cout << "5. Find suggestions" << endl;
-		cout << "6. Change Family Member" << endl;
-		cout << "7. Go Back" << endl;
-		cout << "8. Exit Program" << endl;
-
-		cin >> choice;
-
-		switch (choice) {
-		case 1:
-			currentwishlist(familymem, familymemb, items, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 2:
-			purchaseditems(familymem, familymemb, items, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 3:
-			editwishlist(familymem, familymemb, items, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 4:
-			//	listfamily(familymem, instore);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 5:
-			//	exit(0);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 6:
-			selectfamily(familymem, instore);
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 7:
-			cleanup();
-			wishSave(familymem, familymemb, chosenmem, instore);
-			break;
-		case 8:
-			exit(0);
-			break;
-		}
 	}
 }
 
@@ -537,11 +544,28 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 
 /*------------------------------------------------------------------------*/
 
-/*
-void editwishlist
+// GUI/Terminal Functions
 
-void suggestions
+/*------------------------------------------------------------------------*/
 
-void purchaseditems
-	bool purchaseassigner (Controls familymemb[chosenmem][0][i])
-*/
+void welcome() {
+	cout << "Welcome to the Family Wish List" << endl;
+	cout << "-------------------------------" << endl;
+}
+
+void cleanup() {
+	system("CLS");
+}
+
+void header(string familymem[], int& chosenmem) {
+	cleanup();
+	cout << "Family member: " << familymem[chosenmem] << endl;
+	cout << "-------------------------------" << endl;
+}
+
+void selectedfamily(string familymem[], int& instore, int& chosenmem) {
+	header(familymem, chosenmem);
+	menu2(familymem, instore, chosenmem);
+}
+
+/*------------------------------------------------------------------------*/
