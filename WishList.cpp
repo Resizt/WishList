@@ -29,6 +29,7 @@ void listassigner(string[], string familymemb[50][20][1], int&, int&);
 void currentwishlist(string[], string familymemb[50][20][1], int&, int&);
 void purchaseditems(string[], string familymemb[50][20][1], int&, int&);
 void editwishlist(string[], string familymemb[50][20][1], int&, int&);
+void suggestions(string[], string familymemb[50][20][1], int&, int&);
 
 // Info/Storage Manager
 void readin(string[], int&);
@@ -102,7 +103,7 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 	listassigner(familymem, familymemb, instore, chosenmem);
 	header(familymem, chosenmem);
 
-	while (choice != 7 || choice != 8) {
+	while (choice != 8) {
 		cout << "1. Current Wish List" << endl;
 		cout << "2. Items Already Aquried" << endl;
 		cout << "3. Edit Wish List" << endl;
@@ -407,7 +408,7 @@ void removemem(string familymem[], int& instore) {
 
 /*------------------------------------------------------------------------*/
 
-// GUI/Terminal Functions
+// Wish List Functions
 
 /*------------------------------------------------------------------------*/
 
@@ -540,6 +541,22 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 			cout << "There's nothing on the list" << endl;
 			break;
 	}
+}
+
+void suggestions(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
+	header(familymem, chosenmem);
+
+	int choice;
+
+	cout << "What type of items is this person intreseted in?" << endl;
+
+	cin >> choice;
+
+	suggestionsList(choice);
+
+}
+void suggestionsList(int choice) {
+
 }
 
 /*------------------------------------------------------------------------*/
