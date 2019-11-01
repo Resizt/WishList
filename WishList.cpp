@@ -557,6 +557,7 @@ void suggestions(string familymem[], string familymemb[50][20][1], int& items, i
 }
 void suggestionsList(int choice) {
 
+
 }
 
 /*------------------------------------------------------------------------*/
