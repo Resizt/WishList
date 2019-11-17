@@ -38,7 +38,7 @@ void suggestionsList(int);
 void readin(string[], int&);
 void save(string[], int&);
 void cleaner(string[], int&);
-void wishSave(string[], string familymemb[50][20][1], int&, int&);
+void wishSave(string[], string familymemb[50][20][1], int&, int&, int&);
 void wishReadin(string[], string familymemb[50][20][1], int&, int&);
 void wishCleaner(string[], string familymemb[50][20][1], int&, int&);
 
@@ -104,7 +104,7 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 	int choice = 0, items = 0, amount = 1;
 
 	wishReadin(familymem, familymemb, chosenmem, amount);
-	//wishCleaner(familymem, familymemb, chosenmem, amount);
+	wishCleaner(familymem, familymemb, chosenmem, amount);
 	listassigner(familymem, familymemb, instore, chosenmem);
 
 	header(familymem, chosenmem);
@@ -124,11 +124,11 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 		switch (choice) {
 		case 1:
 			currentwishlist(familymem, familymemb, amount, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 2:
 			purchaseditems(familymem, familymemb, items, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 3:
 			if (amount != 0) {
@@ -148,12 +148,12 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 5:
-			addItem(familymem, familymemb, chosenmem, instore);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			addItem(familymem, familymemb, chosenmem, amount);
+			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 6:
 			selectfamily(familymem, instore);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 7:
 			cleanup();
@@ -208,7 +208,7 @@ void cleaner(string familymem[], int& instore) {
 	}
 }
 
-void wishSave(string familymem[], string familymemb[50][20][1], int& chosenmem, int& instore) {
+void wishSave(string familymem[], string familymemb[50][20][1], int& chosenmem, int& instore, int& amount) {
 	ofstream wishlist;
 	string newfile;
 	newfile = familymem[chosenmem];
@@ -216,11 +216,11 @@ void wishSave(string familymem[], string familymemb[50][20][1], int& chosenmem, 
 
 	wishlist.open(newfile);
 
-	for (int wishitem = 1; wishitem <= 20; wishitem++) {
+	for (int wishitem = 1; wishitem <= amount; wishitem++) {
 		if (familymemb[chosenmem][wishitem][0] != " ")
 			wishlist << familymemb[chosenmem][wishitem][0] << endl;
-		wishlist.close();
 	}
+	wishlist.close();
 }
 
 void wishReadin(string familymem[], string familymemb[50][20][1], int& chosenmem, int& amount) {
@@ -240,7 +240,7 @@ void wishReadin(string familymem[], string familymemb[50][20][1], int& chosenmem
 	}
 
 	while (getline(wishingList, items)) {
-		familymemb[chosenmem][amount][1] = items;
+		familymemb[chosenmem][amount][0] = items;
 		amount++;
 	}
 	wishingList.close();
@@ -248,7 +248,7 @@ void wishReadin(string familymem[], string familymemb[50][20][1], int& chosenmem
 
 void wishCleaner(string familymem[], string familymemb[50][20][1], int& chosenmem, int& amount) {
 	string move;
-	/*
+	
 	for (int item = 1; item <= amount; item++) {
 		if (familymemb[chosenmem][item][0] == "") {
 			move = familymemb[chosenmem][item][0];
@@ -256,7 +256,7 @@ void wishCleaner(string familymem[], string familymemb[50][20][1], int& chosenme
 			familymemb[chosenmem][item + 1][0] = move;
 		}
 	}
-	*/
+
 
 	for (int i = 1; i <= amount; i++) {
 		if (familymemb[chosenmem][i][0] == "")
@@ -479,7 +479,7 @@ void purchaseditems(string familymem[], string familymemb[50][20][1], int& items
 	cout << "-------------------------------" << endl;
 }
 
-void editwishlist(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
+void editwishlist(string familymem[], string familymemb[50][20][1], int& amount, int& chosenmem) {
 	header(familymem, chosenmem);
 	string item, rename, move;
 	int input, number, bought = 0;
@@ -493,32 +493,10 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 	cin >> input;
 
 	while (input != 0) {
-		/*
-		// Adding an item
-		if (input == 1) {
-			header(familymem, chosenmem);
-			if (items != 20) {
-				items++;
-				cout << "Put in the item you want to add" << endl;
-				cin.ignore();
-				getline(cin, item);
-				familymemb[chosenmem][items][0] = item;/*
-				if (familymemb[chosenmem][items][1] != "") {
-					familymemb[chosenmem][items][0] = familymemb[chosenmem][items][1];
-					familymemb[chosenmem][items][1] = "";
-				}
-				
-			}
-			else
-				cout << "Your list is full" << endl;
-			break;
-		}
-		*/
-
 		// Editin an existing item
 		if (input == 1) {
 			header(familymem, chosenmem);
-			for (int i = 1; i <= items; i++) {
+			for (int i = 1; i <= amount; i++) {
 				cout << i << ". " << familymemb[chosenmem][i][0] << endl;
 				cout << "-------------------------------" << endl;
 			}
@@ -531,7 +509,7 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 				familymemb[chosenmem][number][0] = rename;
 			break;
 		}
-		else if (items == 0) {
+		else if (amount == 0) {
 			cout << "There's nothing on the list" << endl;
 			break;
 		}
@@ -541,7 +519,7 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 			header(familymem, chosenmem);
 			cout << "Wishlist items" << endl;
 			
-			for (int i = 1; i <= items; i++) {
+			for (int i = 1; i <= amount; i++) {
 				cout << i << ". " << familymemb[chosenmem][i][0] << endl;
 				cout << "-------------------------------" << endl;
 			}
@@ -614,12 +592,15 @@ void suggestionsList(int choice) {
 
 }
 
-void addItem(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
+void addItem(string familymem[], string familymemb[50][20][1], int& chosenmem, int& amount) {
+	string item;
 	cleanup();
-	if (items != 20) {
-		items++;
+	if (amount != 20) {
+		amount++;
 		cout << "Please enter the item you want to add to the Wishlist" << endl;
-		cin >> familymemb[chosenmem][items][0];
+		cin.ignore();
+		getline(cin, item);
+		familymemb[chosenmem][amount][0] = item;
 	}
 	else
 		cout << familymem[chosenmem] << " Wishlist is full" << endl;
