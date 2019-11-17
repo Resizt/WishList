@@ -15,6 +15,7 @@ void menu(string[], int&, int&);
 void menu2(string[], int&, int&);
 void header(string[], int&);
 void cleanup();
+void comingsoon(string[], int&);
 
 // Family functions
 void addfamily(string[], int&);
@@ -130,12 +131,21 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 			wishSave(familymem, familymemb, chosenmem, instore);
 			break;
 		case 3:
-			editwishlist(familymem, familymemb, items, chosenmem);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			if (amount != 0) {
+				editwishlist(familymem, familymemb, amount, chosenmem);
+				wishSave(familymem, familymemb, chosenmem, instore, amount);
+			}
+			else
+			{
+				header(familymem, chosenmem);
+				cout << "You have nothing on the list" << endl;
+				cout << "-------------------------------" << endl;
+			}
 			break;
 		case 4:
-			//	listfamily(familymem, instore);
-			wishSave(familymem, familymemb, chosenmem, instore);
+			comingsoon(familymem, chosenmem);
+			//listfamily(familymem, instore);
+			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
 		case 5:
 			addItem(familymem, familymemb, chosenmem, instore);
@@ -338,6 +348,10 @@ void selectfamily(string familymem[], int& instore) {
 			cout << i << ". " << familymem[i] << endl;
 		}
 		cin >> choice;
+		while (choice > instore) {
+			cout << "Invalid Choice, please try again" << endl;
+			cin >> choice;
+		}
 	}
 	else {
 		cout << "There's no one to select up" << endl;
@@ -467,13 +481,14 @@ void purchaseditems(string familymem[], string familymemb[50][20][1], int& items
 
 void editwishlist(string familymem[], string familymemb[50][20][1], int& items, int& chosenmem) {
 	header(familymem, chosenmem);
-	string item, rename;
+	string item, rename, move;
 	int input, number, bought = 0;
 	char response;
 
 	//cout << "1. Add an item" << endl;
 	cout << "1. Edit an existing item" << endl;
 	cout << "2. Change the status of an item" << endl;
+	cout << "3. Delete an item" << endl;
 
 	cin >> input;
 
@@ -505,6 +520,7 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 			header(familymem, chosenmem);
 			for (int i = 1; i <= items; i++) {
 				cout << i << ". " << familymemb[chosenmem][i][0] << endl;
+				cout << "-------------------------------" << endl;
 			}
 
 			cout << "Which item you want to edit" << endl;
@@ -542,11 +558,41 @@ void editwishlist(string familymem[], string familymemb[50][20][1], int& items, 
 				else if ((response == 'N') || (response == 'n'))
 					if(familymemb[chosenmem][number][0] != "")
 						familymemb[chosenmem][number][0] = familymemb[chosenmem][number][1];
+				break;
 		}
-		else if (items == 0)
+		else if (amount == 0) {
 			cout << "There's nothing on the list" << endl;
 			break;
+		}
 
+		// Delete their item
+			if (input == 3) {
+				header(familymem, chosenmem);
+				cout << "Select an item to delete" << endl;
+				for (int i = 1; i <= amount; i++) {
+					cout << i << ". " << familymemb[chosenmem][i][0] << endl;
+					cout << "-------------------------------" << endl;
+				}
+				cin >> number;
+				cleanup();
+				header(familymem, chosenmem);
+				cout << familymemb[chosenmem][number][0] << " has been deleted." << endl;
+				cout << "-------------------------------" << endl;
+				familymemb[chosenmem][number][0] = "";
+				for (int item = 1; item <= amount; item++) {
+					if (familymemb[chosenmem][item][0] == "") {
+						move = familymemb[chosenmem][item][0];
+						familymemb[chosenmem][item][0] = familymemb[chosenmem][item + 1][0];
+						familymemb[chosenmem][item + 1][0] = move;
+					}
+				}
+				amount--;
+				break;
+			}
+			else if (amount == 0) {
+				cout << "There's nothing on the list" << endl;
+				break;
+			}
 	}
 }
 
@@ -604,6 +650,10 @@ void selectedfamily(string familymem[], int& instore, int& chosenmem) {
 	menu2(familymem, instore, chosenmem);
 }
 
-/*------------------------------------------------------------------------*/
+void comingsoon(string familymem[], int& chosenmem) {
+	header(familymem, chosenmem);
+	cout << "This Function is coming soon" << endl;
+	cout << "-------------------------------" << endl;
+}
 
-// Select Family bug fixed
+/*------------------------------------------------------------------------*/
