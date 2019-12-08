@@ -33,6 +33,7 @@ void editwishlist(string[], string familymemb[50][20][1], int&, int&);
 void addItem(string[], string familymemb[50][20][1], int&, int&);
 void suggestions(string[], string familymemb[50][20][1], int&, int&);
 void suggestionsList(int);
+void suggestionlistitems();
 
 // Info/Storage Manager
 void readin(string[], int&);
@@ -579,17 +580,45 @@ void suggestions(string familymem[], string familymemb[50][20][1], int& items, i
 
 	int choice;
 
+	string addItem;
+
 	cout << "What type of items is this person intreseted in?" << endl;
+	
+	suggestionlistitems();
 
 	cin >> choice;
 
-	suggestionsList(choice);
+	// addItem = suggestionsList(choice);
 
+}
+
+void suggestionlistitems(){ 
+	cout << "1. Clothing" << endl;
+	cout << "2. " << endl;
+	cout << "3. Clothing" << endl;
+	cout << "4. Clothing" << endl;
+	cout << "5. Clothing" << endl;
+	cout << "6. Clothing" << endl;
 }
 
 void suggestionsList(int choice) {
 
-
+	switch (choice) {
+		case 1:
+			cout << "" << endl;
+		case 2:
+			cout << "Lol testing" << endl;
+		case 3:
+			cout << "Lol testing" << endl;
+		case 4:
+			cout << "Lol testing" << endl;
+		case 5:
+			cout << "Lipstick" << endl;
+		case 6:
+			cout << "Lol testing" << endl;
+		case 7:
+			cout << "Lol testing" << endl;
+	}
 }
 
 void addItem(string familymem[], string familymemb[50][20][1], int& chosenmem, int& amount) {
