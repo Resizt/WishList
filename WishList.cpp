@@ -114,11 +114,10 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 		cout << "1. Current Wish List" << endl;
 		cout << "2. Items Already Aquried" << endl;
 		cout << "3. Edit Wish List" << endl;
-		cout << "4. Type of items" << endl;
-		cout << "5. Add a item" << endl;
-		cout << "6. Change Family Member" << endl;
-		cout << "7. Go Back" << endl;
-		cout << "8. Exit Program" << endl;
+		cout << "4. Add a item" << endl;
+		cout << "5. Change Family Member" << endl;
+		cout << "6. Go Back" << endl;
+		cout << "7. Exit Program" << endl;
 
 		cin >> choice;
 
@@ -143,24 +142,26 @@ void menu2(string familymem[], int& instore, int& chosenmem) {
 				cout << "-------------------------------" << endl;
 			}
 			break;
+	/*
+	This function is to be worked on
 		case 4:
-			comingsoon(familymem, chosenmem);
-			//listfamily(familymem, instore);
+			listfamily(familymem, instore);
 			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
-		case 5:
+	*/
+		case 4:
 			addItem(familymem, familymemb, chosenmem, amount);
 			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
-		case 6:
+		case 5:
 			selectfamily(familymem, instore);
 			wishSave(familymem, familymemb, chosenmem, instore, amount);
 			break;
-		case 7:
+		case 6:
 			cleanup();
 			menu(familymem, choice, instore);
 			break;
-		case 8:
+		case 7:
 			exit(0);
 			break;
 		}
@@ -597,7 +598,7 @@ void suggestionlistitems(){
 	cout << "2. " << endl;
 	cout << "3. Clothing" << endl;
 	cout << "4. Clothing" << endl;
-	cout << "5. Clothing" << endl;
+	cout << "5. Makeups" << endl;
 	cout << "6. Clothing" << endl;
 }
 
